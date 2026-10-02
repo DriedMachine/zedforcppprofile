@@ -1,0 +1,55 @@
+[
+  // 🐛 Debug 构建流程
+  {
+    "label": "① Conan Install (Debug)",
+    "command": "conan",
+    "args": [
+      "install",
+      ".",
+      "--build=missing",
+      "--profile:host=clang-llvm-debug",
+      "--profile:build=clang-llvm-release",
+    ],
+  },
+  {
+    "label": "② Configure (Debug)",
+    "command": "cmake",
+    "args": ["--preset", "conan-debug"],
+  },
+  {
+    "label": "③ Build (Debug)",
+    "command": "cmake",
+    "args": ["--build", "--preset", "conan-debug"],
+  },
+  {
+    "label": "④ Run (Debug)",
+    "command": "./build/Debug/HelloWorld.exe",
+  },
+  // 🚀 Release 构建流程
+  {
+    "label": "① Conan Install (Release)",
+    "command": "conan",
+    "args": [
+      "install",
+      "--output-folder=build/release",
+      ".",
+      "--build=missing",
+      "--profile:host=clang-llvm-release",
+      "--profile:build=clang-llvm-release",
+    ],
+  },
+  {
+    "label": "② Configure (Release)",
+    "command": "cmake",
+    "args": ["--preset", "conan-release"],
+  },
+  {
+    "label": "③ Build (Release)",
+    "command": "cmake",
+    "args": ["--build", "--preset", "conan-release"],
+  },
+  {
+    "label": "④ Run (Release)",
+    "command": "./build/Release/HelloWorld.exe",
+  },
+]

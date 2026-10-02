@@ -1,0 +1,90 @@
+# ==========================================================
+# 基于 Microsoft 风格，专为 Unreal Engine 优化的 Clang-Format 配置
+# 核心特点：Allman 换行、指针靠左、长参数对齐、单行 if (无大括号)
+# ==========================================================
+
+BasedOnStyle: Microsoft
+Language: Cpp
+
+# --- 缩进与宽度 ---
+IndentWidth: 4          # 缩进宽度为 4
+TabWidth: 4             # 制表符宽度为 4
+UseTab: ForIndentation  # 仅在缩进时使用 Tab，其余对齐使用空格 (虚幻推荐)
+ColumnLimit: 140        # 单行最大长度。考虑到 UE 模板和长函数名，设为 140 比较舒适
+
+# --- 模板与指针样式 ---
+# 设为 false 后，template<> 之间不留空格
+SpaceAfterTemplateKeyword: false
+# 指针对齐：Type* VariableName (虚幻官方标准)
+PointerAlignment: Left
+
+# --- 核心：参数折行与对齐 (针对长函数) ---
+# 当函数参数换行时，将其对齐到左括号 '(' 之后的起始位置
+AlignAfterOpenBracket: Align
+# 设为 false 表示禁止在同一行放置多个参数（一旦触发换行，则每个参数自成一行）
+BinPackParameters: false
+# 设为 false 表示禁止在同一行放置多个实参
+BinPackArguments: false
+
+# --- 大括号换行逻辑 (严格 Allman 风格) ---
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true           # class 后的左括号换行
+  AfterControlStatement: Always # if/for/while 后的左括号换行
+  AfterEnum: false           # enum 内部保持紧凑，允许单行
+  AfterFunction: true        # 函数声明后的左括号换行 (核心：构造函数、普通函数)
+  AfterNamespace: true       # namespace 后的左括号换行
+  AfterStruct: true          # struct 后的左括号换行
+  AfterUnion: true           # union 后的左括号换行
+  BeforeCatch: true          # catch 之前的左括号换行
+  BeforeElse: true           # else 之前的左括号换行
+  IndentBraces: false        # 大括号本身不进一步缩进
+  SplitEmptyFunction: true   # 空函数体 {} 强制拆成三行 (解决你之前 GetAllItems 的需求)
+
+# --- 函数/语句的合并规则 ---
+# 禁止任何带大括号的函数缩成一行 (强制三行)
+AllowShortFunctionsOnASingleLine: None
+# 禁止把带大括号的代码块 (如 if { ... }) 合并到一行
+AllowShortBlocksOnASingleLine: false
+# 允许简单枚举在一行：enum { Red, Blue };
+AllowShortEnumsOnASingleLine: true
+# 允许不带大括号的 if (!) return; 保持单行，这在 UE 处理判空时非常简洁
+AllowShortIfStatementsOnASingleLine: WithoutElse
+
+# --- 模板声明控制 ---
+# 强制 template<> 和下面的 class/struct 之间换行
+AlwaysBreakTemplateDeclarations: Yes
+
+# --- 惩罚值 (影响格式化引擎决策) ---
+# 惩罚值越高，引擎越会尽量避免这种情况
+PenaltyReturnTypeOnItsOwnLine: 1000   # 除非万不得已，否则不要让返回值单独占一行
+PenaltyBreakBeforeFirstCallParameter: 10 # 降低惩罚值，鼓励长函数在第一个参数前就换行对齐
+
+# --- 虚幻引擎专用宏处理 ---
+# 告诉格式化引擎这些是宏，不要把它们当成普通的函数调用或变量
+StatementMacros:
+  - FORCEINLINE
+  - UFUNCTION
+  - UPROPERTY
+  - UCLASS
+  - USTRUCT
+  - GENERATED_BODY
+  - PURE_VIRTUAL
+
+# --- 消除其它自动对齐的干扰 ---
+# 禁止连续赋值语句对齐（防止出现巨大的空格缝隙）
+AlignConsecutiveAssignments: false
+# 禁止连续声明语句对齐
+AlignConsecutiveDeclarations: false
+# 禁止操作符对齐
+AlignOperands: false
+
+# --- 细节修正 ---
+# public/private 等访问限定符相对于当前缩进的偏移
+AccessModifierOffset: -4
+# 对 namespace 内部的所有内容进行缩进 (虚幻项目可选，通常设为 All)
+NamespaceIndentation: All
+# 禁止自动排序 Include (手动分组头文件在 UE 开发中很重要，防止编译错误)
+SortIncludes: false
+# if/for/while 等关键字与左括号 '(' 之间保留空格
+SpaceBeforeParens: ControlStatements

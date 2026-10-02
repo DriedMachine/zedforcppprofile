@@ -1,0 +1,25 @@
+// Project-local debug tasks
+//
+// For more documentation on how to configure debug tasks,
+// see: https://zed.dev/docs/debugger
+[
+  {
+    "label": "Debug: HelloWorld (Clang-LLVM)",
+    // 自动触发构建流程，确保调试的是最新代码
+    "build": {
+      "command": "cmake",
+      "args": ["--build", "--preset", "conan-debug"],
+      "cwd": "$ZED_WORKTREE_ROOT",
+    },
+    // 指向你构建生成的二进制文件路径
+    "program": "$ZED_WORKTREE_ROOT/build-llvm-debug/build/Debug/HelloWorld.exe",
+    "request": "launch",
+    "adapter": "CodeLLDB",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "env": {
+      "PATH": "$PATH", // 确保能找到 Conan 管理的动态链接库
+    },
+    // 调试器启动前的额外参数（可选）
+    "args": [],
+  },
+]
