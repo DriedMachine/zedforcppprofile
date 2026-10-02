@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 4.0)
 project(
     HelloWorld
     VERSION 1.0
-    LANGUAGES C CXX
+    LANGUAGES CXX
 )
 
 # 2. 设置 C++ 标准
@@ -24,22 +24,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${PROJECT_SOURCE_DIR}/include
 )
 
-add_library(glad STATIC
-    third_party/glad/src/gl.c
-)
-
-target_include_directories(glad PUBLIC
-    third_party/glad/include
-)
-
 # 4. 查找并链接 fmt 库
 find_package(fmt CONFIG REQUIRED)
-find_package(glfw3 CONFIG REQUIRED)
-find_package(OpenGL REQUIRED)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    glad
     fmt::fmt
-    glfw
-    OpenGL::GL
 )

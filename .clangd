@@ -1,2 +1,57 @@
 CompileFlags:
+  # 你的 Conan + CMake(Ninja) 生成的位置
   CompilationDatabase: build/Debug
+
+  # 让 clangd 明确使用 clang++ 的参数解析方式
+  # Compiler: clang++
+
+Index:
+  # 后台建立整个项目的符号索引
+  # Background: Build
+
+  # 预先索引标准库，改善空文件中的 STL 补全
+  StandardLibrary: true
+
+Diagnostics:
+  # 检查缺少的直接 include
+  MissingIncludes: Strict
+
+  # 检查没有被使用的 include
+  UnusedIncludes: Strict
+
+Completion:
+  # 接受补全时自动添加对应头文件
+  HeaderInsertion: IWYU
+
+  # 允许补全当前可见作用域之外的符号
+  AllScopes: Yes
+
+  # 完整显示函数参数占位符
+  ArgumentLists: FullPlaceholders
+
+  # 提供代码片段
+  # CodePatterns: All
+
+  # 宏使用精确前缀匹配
+  # MacroFilter: ExactPrefix
+
+InlayHints:
+  Enabled: true
+
+  # 函数调用显示参数名
+  ParameterNames: true
+
+  # 自动推导类型时显示类型
+  DeducedTypes: true
+
+  # C++20 designated initializer 等
+  # Designators: true
+
+  # 显示代码块结束注释
+  BlockEnd: false
+
+  # 默认参数提示
+  DefaultArguments: false
+
+  # 类型提示长度限制
+  TypeNameLimit: 24
